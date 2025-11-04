@@ -1,12 +1,13 @@
 import analyse from "../controllers/analysiscontroller.js";
-import express, { Router } from "express";
+import express from "express";
 import getLimiter from "../middlewares/analysislimiter.js";
 import {getMulter} from "../middlewares/multer.js";
+import { verify } from "../middlewares/verify.js";
 
 const analysisrouter=express.Router();
 const ratelimiter=getLimiter();
 const upload=getMulter();
 
-analysisrouter.post("/",ratelimiter,upload.single("pdffile"),analyse);
+analysisrouter.post("/",verify,ratelimiter,upload.single("pdffile"),analyse);
 
 export default analysisrouter;

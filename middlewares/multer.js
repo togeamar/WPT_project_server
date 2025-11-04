@@ -1,10 +1,9 @@
 import multer from "multer";
-
-
+const storage=multer.memoryStorage();
 
 
 export function getMulter(){
-    const storage=multer.memoryStorage();
+    
     const upload=multer({
         storage:storage,
         limits:{

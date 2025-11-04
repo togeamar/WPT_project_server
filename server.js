@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userrouter from './routes.js/user-routes.js'
 import analysisrouter from './routes.js/anayle-route.js';
 import cors from 'cors';
+import adminrouter from './routes.js/admin-routes.js';
 
 dotenv.config()
 connectDB();
@@ -18,7 +19,10 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/User",userrouter);
+app.use("/User",userrouter);
 app.use("/analyse",analysisrouter);
+app.use("/admin",adminrouter);
+
 
 const port=process.env.PORT || 5000;
 app.listen(port,()=>console.log(`server runnning on port ${port}`));

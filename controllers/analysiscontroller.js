@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 import { GoogleGenAI } from "@google/genai";
 import {getMulter} from "../middlewares/multer.js";
+import scoremodel from '../datamodels/scoremodel.js';
+import usermodel from '../datamodels/usermodel.js';
 
 const uplaod=getMulter();
 
 const genai=new GoogleGenAI({apiKey:process.env.GEMINI_API_KEY});
 console.log(process.env.GEMINI_API_KEY);
 export default async function analyse(req,res) {
+    console.log(req.loggedInAdminId);
     try{
         if(!req.file){
             return res.status(400).send('No file uploaded or file type was incorrect.');
@@ -88,8 +91,12 @@ export default async function analyse(req,res) {
         });
         const text=result.candidates[0].content.parts[0].text;
         const cleanedstring=text.replace(/^```json\n/, "").replace(/\n```$/, "");
-
+        const user=await usermodel.findById(req.loggedInAdminId);
         const analysisobject=JSON.parse(cleanedstring);
+        await scoremodel.findOneAndUpdate(
+          { score:analysisobject.overall_score },
+          { usermodel: user._id },
+          { upsert: true, new: true });
         res.status(201).send(analysisobject);
     }
     catch(error){
