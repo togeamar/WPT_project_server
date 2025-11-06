@@ -19,7 +19,6 @@ app.get("/",(req,res)=>{
 })
 
 app.use("/User",userrouter);
-app.use("/User",userrouter);
 app.use("/analyse",analysisrouter);
 app.use("/admin",adminrouter);
 

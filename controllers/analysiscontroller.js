@@ -94,8 +94,8 @@ export default async function analyse(req,res) {
         const user=await usermodel.findById(req.loggedInAdminId);
         const analysisobject=JSON.parse(cleanedstring);
         await scoremodel.findOneAndUpdate(
-          { score:analysisobject.overall_score },
           { usermodel: user._id },
+          { $set: { score: analysisobject.overall_score } },
           { upsert: true, new: true });
         res.status(201).send(analysisobject);
     }
