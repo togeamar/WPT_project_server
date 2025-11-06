@@ -13,5 +13,4 @@ adminrouter.get("/getadmins",verify,getAdmins);
 adminrouter.post("/deleteadmin",verify,deleteAdmin);
 
 
-
 export default adminrouter;
